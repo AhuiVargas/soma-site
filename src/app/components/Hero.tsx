@@ -12,6 +12,9 @@ export default function Home() {
 
 		video.playbackRate = 1;
 
+		// Force load and play for mobile
+		video.load();
+		
 		const attemptPlay = async () => {
 			try {
 				await video.play();
@@ -20,19 +23,33 @@ export default function Home() {
 			}
 		};
 
+		// Try to play immediately and on various events
 		attemptPlay();
+		
+		// Fallback for mobile browsers
+		const handleUserInteraction = () => {
+			attemptPlay();
+			document.removeEventListener('touchstart', handleUserInteraction);
+			document.removeEventListener('click', handleUserInteraction);
+		};
+		
+		document.addEventListener('touchstart', handleUserInteraction);
+		document.addEventListener('click', handleUserInteraction);
 	}, []);
 
 	return (
 		<main className="relative w-full h-screen overflow-hidden">
 			<video
 				ref={videoRef}
-				className="fixed top-0 left-0 w-full h-full object-cover z-0"
-				src="https://cqzzlpsbwibykkegxmvg.supabase.co/storage/v1/object/public/public-media/smokeLoop.mp4"
 				autoPlay
-				loop
 				muted
 				playsInline
+				loop
+				preload="metadata"
+				webkit-playsinline="true"
+				x-webkit-airplay="allow"
+				className="fixed top-0 left-0 w-full h-full object-cover z-0"
+				src="https://cqzzlpsbwibykkegxmvg.supabase.co/storage/v1/object/public/public-media/smokeLoop.mp4"
 			/>
 
 			<div className="fixed top-0 left-0 w-full h-full bg-black/20 z-[1] pointer-events-none" />
