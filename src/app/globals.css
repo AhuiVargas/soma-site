@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+:root {
+  --background: #12101e;
+  --foreground: #ffffff;
+  --font-benzin: 'Benzin', sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-benzin);
+}
+
+/* Global tag defaults */
+html,
+body {
+  @apply bg-background text-foreground font-sans antialiased;
+}
