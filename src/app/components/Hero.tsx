@@ -7,9 +7,20 @@ export default function Home() {
 	const videoRef = useRef<HTMLVideoElement>(null);
 
 	useEffect(() => {
-		if (videoRef.current) {
-			videoRef.current.playbackRate = 1;
-		}
+		const video = videoRef.current;
+		if (!video) return;
+
+		video.playbackRate = 1;
+
+		const attemptPlay = async () => {
+			try {
+				await video.play();
+			} catch (err) {
+				console.warn("Autoplay failed — waiting for user interaction?", err);
+			}
+		};
+
+		attemptPlay();
 	}, []);
 
 	return (
@@ -17,7 +28,7 @@ export default function Home() {
 			<video
 				ref={videoRef}
 				className="fixed top-0 left-0 w-full h-full object-cover z-0"
-                src="https://cqzzlpsbwibykkegxmvg.supabase.co/storage/v1/object/public/public-media/smokeLoop.mp4"
+				src="https://cqzzlpsbwibykkegxmvg.supabase.co/storage/v1/object/public/public-media/smokeLoop.mp4"
 				autoPlay
 				loop
 				muted
